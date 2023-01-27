@@ -1,5 +1,7 @@
 **English** | [中文](README_CN.md)
 
+Test by Shuaike
+
 # KernelSU
 
 A Kernel based root solution for Android GKI.
