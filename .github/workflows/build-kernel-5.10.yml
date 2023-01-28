@@ -103,39 +103,39 @@ jobs:
     - name: Build boot-lz4.img
       working-directory: android-kernel
       run: |
-        tools/mkbootimg/mkbootimg.py --header_version 4 --kernel ./out/android12-5.10/dist/Image.lz4 --ramdisk out/ramdisk --output ./out/android12-5.10/dist/boot-lz4.img --os_version ${{ matrix.os_version }} --os_patch_level ${{ matrix.os_patch_level }}
-        ./build/build-tools/path/linux-x86/avbtool add_hash_footer --partition_name boot --partition_size $((64*1024*1024)) --image out/android12-5.10/dist/boot-lz4.img --algorithm SHA256_RSA2048 --key ./prebuilts/kernel-build-tools/linux-x86/share/avb/testkey_rsa2048.pem
+        tools/mkbootimg/mkbootimg.py --header_version 4 --kernel ./out/android13-5.10/dist/Image.lz4 --ramdisk out/ramdisk --output ./out/android13-5.10/dist/boot-lz4.img --os_version ${{ matrix.os_version }} --os_patch_level ${{ matrix.os_patch_level }}
+        ./build/build-tools/path/linux-x86/avbtool add_hash_footer --partition_name boot --partition_size $((64*1024*1024)) --image out/android13-5.10/dist/boot-lz4.img --algorithm SHA256_RSA2048 --key ./prebuilts/kernel-build-tools/linux-x86/share/avb/testkey_rsa2048.pem
 
     - name: Build boot-gz.img
       working-directory: android-kernel
       run: |
-        cat out/android12-5.10/dist/Image | ./prebuilts/build-tools/path/linux-x86/gzip -n -f -9 > out/android12-5.10/dist/Image.gz
-        tools/mkbootimg/mkbootimg.py --header_version 4 --kernel ./out/android12-5.10/dist/Image.gz --ramdisk out/ramdisk --output ./out/android12-5.10/dist/boot-gz.img --os_version ${{ matrix.os_version }} --os_patch_level ${{ matrix.os_patch_level }}
-        ./build/build-tools/path/linux-x86/avbtool add_hash_footer --partition_name boot --partition_size $((64*1024*1024)) --image out/android12-5.10/dist/boot-gz.img --algorithm SHA256_RSA2048 --key ./prebuilts/kernel-build-tools/linux-x86/share/avb/testkey_rsa2048.pem
+        cat out/android13-5.10/dist/Image | ./prebuilts/build-tools/path/linux-x86/gzip -n -f -9 > out/android13-5.10/dist/Image.gz
+        tools/mkbootimg/mkbootimg.py --header_version 4 --kernel ./out/android13-5.10/dist/Image.gz --ramdisk out/ramdisk --output ./out/android13-5.10/dist/boot-gz.img --os_version ${{ matrix.os_version }} --os_patch_level ${{ matrix.os_patch_level }}
+        ./build/build-tools/path/linux-x86/avbtool add_hash_footer --partition_name boot --partition_size $((64*1024*1024)) --image out/android13-5.10/dist/boot-gz.img --algorithm SHA256_RSA2048 --key ./prebuilts/kernel-build-tools/linux-x86/share/avb/testkey_rsa2048.pem
 
     - name: Upload Image.gz
       uses: actions/upload-artifact@v3
       with:
         name: kernel-aarch64-${{ matrix.version }}-Image.gz
-        path: android-kernel/out/android12-5.10/dist/Image.gz
+        path: android-kernel/out/android13-5.10/dist/Image.gz
 
     - name: Upload boot.img
       uses: actions/upload-artifact@v3
       with:
         name: kernel-aarch64-${{ matrix.version }}-boot.img
-        path: android-kernel/out/android12-5.10/dist/boot.img
+        path: android-kernel/out/android13-5.10/dist/boot.img
 
     - name: Upload boot-lz4.img
       uses: actions/upload-artifact@v3
       with:
         name: kernel-aarch64-${{ matrix.version }}-boot-lz4.img
-        path: android-kernel/out/android12-5.10/dist/boot-lz4.img
+        path: android-kernel/out/android13-5.10/dist/boot-lz4.img
 
     - name: Upload boot-gz.img
       uses: actions/upload-artifact@v3
       with:
         name: kernel-aarch64-${{ matrix.version }}-boot-gz.img
-        path: android-kernel/out/android12-5.10/dist/boot-gz.img
+        path: android-kernel/out/android13-5.10/dist/boot-gz.img
 
     - name: Setup mutex for uploading
       if: github.event_name != 'pull_request' && steps.need_upload.outputs.UPLOAD == 'true'
@@ -156,7 +156,7 @@ jobs:
           cd $GITHUB_WORKSPACE/KernelSU
           export VERSION=$(git rev-list --count HEAD)
           cd -
-          OUTDIR=android-kernel/out/android12-5.10/dist
+          OUTDIR=android-kernel/out/android13-5.10/dist
           IMAGE_GZ=${{ matrix.version }}-Image.gz
           BOOT=${{ matrix.version }}-boot.img.zip
           BOOT_LZ4=${{ matrix.version }}-boot-lz4.img.zip
